@@ -35,12 +35,12 @@ public class Hierarchy<T extends Enum<T>> {
         hm.forEach((key, value) -> children.put(key, value.toArray((T[]) Array.newInstance(type, value.size()))));
     }
 
+    @SuppressWarnings("WeakerAccess") // can be called from outside this class if needed.
     public T getParent(T element) {
         return parentAccessor.apply(element);
     }
 
 
-    @SuppressWarnings("unchecked")
     public T[] getChildren(T element) {
         return children.get(element);
     }
@@ -59,7 +59,6 @@ public class Hierarchy<T extends Enum<T>> {
     public <R> R invoke(T element, Function<Object[], R> defaultImpl, Object ... args) {
         String methodName = new Throwable().getStackTrace()[1].getMethodName();
         for (T elem = element;  elem != null;  elem = getParent(elem)) {
-            @SuppressWarnings("unchecked")
             Optional<R> result = invokeMethod(elem, methodName, args);
             if (result.isPresent()) {
                 return result.get();
@@ -73,7 +72,6 @@ public class Hierarchy<T extends Enum<T>> {
     private <R> Optional<R> invokeMethod(T object, String methodName, Object ... args) {
         @SuppressWarnings("unchecked")
         Class<T> clazz = (Class<T>)object.getClass();
-        @SuppressWarnings("unchecked")
         Class<T> enumClass = object.getDeclaringClass();
 
 

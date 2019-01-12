@@ -22,10 +22,10 @@ public enum OsType {
             return true;
         }
     },
-        Linux(Unix),
-        AIX(Unix),
-        HpUx(Unix),
-        SunOs(Unix),
+    Linux(Unix),
+    AIX(Unix),
+    HpUx(Unix),
+    SunOs(Unix),
     ;
 
     private OsType parent = null;
@@ -46,5 +46,9 @@ public enum OsType {
 
     public boolean supportsXWindowSystem() {
         return hierarchy.invoke(this, args -> false);
+    }
+
+    public boolean isA(OsType other) {
+        return hierarchy.relate(other, this);
     }
 }

@@ -68,4 +68,32 @@ class HierarchyTest {
     void callNotImplemented() {
         assertFalse(OsType.Windows.supportsXWindowSystem());
     }
+
+    @Test
+    void callRoot() {
+        assertFalse(OsType.OS.supportsXWindowSystem());
+    }
+
+
+    @Test
+    void relation1() {
+        assertTrue(OsType.Windows2000.isA(OsType.Windows));
+        assertTrue(OsType.Linux.isA(OsType.Unix));
+        assertFalse(OsType.Linux.isA(OsType.Windows));
+    }
+
+    @Test
+    void relation2() {
+        assertTrue(OsType.Windows2000Server.isA(OsType.Windows));
+        assertTrue(OsType.Windows98.isA(OsType.Windows));
+        assertFalse(OsType.Windows98.isA(OsType.Unix));
+        assertFalse(OsType.Windows98.isA(OsType.Linux));
+    }
+
+    @Test
+    void relationSiblings() {
+        assertFalse(OsType.Linux.isA(OsType.AIX));
+        assertFalse(OsType.SunOs.isA(OsType.HpUx));
+        assertFalse(OsType.Windows2000Server.isA(OsType.Windows2000Workstation));
+    }
 }
