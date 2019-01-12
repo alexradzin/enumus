@@ -12,10 +12,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public interface Initializable {
-//    StringBuilder currentMember = new StringBuilder();
-//    AtomicInteger fieldCount = new AtomicInteger(0);
-//    List<Field> fields = new ArrayList<>();
-
     Map<Class, Object> defaultValues = new HashMap<Class, Object>() {{
         put(int.class, 0);
         put(long.class, 0);
@@ -28,9 +24,7 @@ public interface Initializable {
     }};
 
 
-
     Map<Class, ClassData> initializationContext = new HashMap<>();
-    //ClassData context = new ClassData();
 
     class ClassData {
         StringBuilder currentMember = new StringBuilder();
@@ -39,40 +33,20 @@ public interface Initializable {
     }
 
 
-    default void init() {
-        System.out.println(this);
-        System.out.println(getClass());
-
-        String name = toString();
-        Class clazz = getClass();
-
-//        System.out.println(this.getClass().getDeclaringClass());
-//        System.out.println(getClass().getEnumConstants());
-//        System.out.println(Arrays.asList(getClass().getEnumConstants()));
-
-        try {
-            System.out.println(Arrays.toString(clazz.getField(name).getAnnotations()));
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-    }
-
     default <T> T $() {
         return $(null);
     }
 
 
     default <T> T $(T defaultValue) {
-        String name = Util.name(this);
-
-
         Class clazz = getClass();
         if (!clazz.isEnum()) {
             clazz = clazz.getSuperclass();
             if (!clazz.isEnum()) {
-                throw new IllegalStateException("This is not an enum");
+                throw new IllegalStateException(String.format("Class %s is not an enum", clazz.getName()));
             }
         }
+        String name = Util.name(this);
         ClassData context = initializationContext.getOrDefault(clazz, new ClassData());
         initializationContext.putIfAbsent(clazz, context);
 
@@ -88,14 +62,8 @@ public interface Initializable {
             context.fieldCount.set(0);
         }
         Annotation[] annotations = Util.annotations(this, name);
-        // TODO create plain list of single annotations hidden into containers (Values -> [Value], Platforms -> [Platform] etc)
-        System.out.println(clazz + "#" + name + "#" + context.fieldCount + ": " + Arrays.toString(annotations));
-
         Field param = Arrays.stream(clazz.getDeclaredFields()).filter(f -> !Modifier.isStatic(f.getModifiers())).collect(Collectors.toList()).get(context.fieldCount.get()); //[fieldCount.get()];
         String paramName = param.getName();
-
-        System.out.println(param.getType());
-
         @SuppressWarnings("unchecked")
         T value = (T)Arrays.stream(annotations)
                 .map(a -> Util.isContainer(a) ? Util.invoke(a, Util.method(a.annotationType(), "value")) : new Annotation[] {a})
@@ -105,18 +73,8 @@ public interface Initializable {
                 .findFirst()
                 .map(Util::create)
                 .orElseGet(() -> defaultValue == null ? defaultValues.get(param.getType()) : defaultValue);
-                //.orElse(defaultValue);
 
         context.fieldCount.incrementAndGet();
         return value;
     }
-
-
-
-    //    default <T> T $(T defaultValue) {
-//        String name = toString();
-//        Class clazz = getClass();
-//        System.out.println(clazz + "#" + name);
-//        return defaultValue;
-//    }
 }

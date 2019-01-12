@@ -23,12 +23,14 @@ public enum OsType {
         }
     },
     Linux(Unix),
+        IOS(Linux),
+        Android(Linux),
     AIX(Unix),
     HpUx(Unix),
     SunOs(Unix),
     ;
 
-    private OsType parent = null;
+    private OsType parent;
     private static Hierarchy<OsType> hierarchy = new Hierarchy<>(OsType.class, e -> e.parent);
 
 

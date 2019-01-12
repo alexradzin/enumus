@@ -16,6 +16,8 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InitializationTest {
@@ -26,7 +28,7 @@ class InitializationTest {
 
     @Test
     void oneNullString() {
-        assertEquals(null, OneStringParamTestEnum.ZERO.str);
+        assertNull(OneStringParamTestEnum.ZERO.str);
     }
 
     @Test
@@ -98,6 +100,11 @@ class InitializationTest {
     @Test
     void onePatternParameterAnnotation() {
         assertTrue(OnePatternTestEnum.IP.pattern.matcher("127.0.0.1").find());
+    }
+
+    @Test
+    void notEnum() {
+        assertThrows(IllegalStateException.class, MyTestClass::new, String.format("Class %s is not an enum", MyTestClass.class.getName()));
     }
 
     public enum OneStringParamTestEnum implements Initializable {
@@ -189,6 +196,12 @@ class InitializationTest {
 
         OnePatternTestEnum() {
             pattern = $();
+        }
+    }
+
+    class MyTestClass implements Initializable {
+        MyTestClass() {
+            $();
         }
     }
 
