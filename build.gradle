@@ -21,18 +21,23 @@ repositories {
     }
 }
 
-
 dependencies {
-    testCompile("org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
-    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    testCompileOnly(
+            'junit:junit:4.12'
+    )
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    )
+    testRuntimeOnly(
+            'org.junit.jupiter:junit-jupiter-engine:5.1.0',
+            'org.junit.vintage:junit-vintage-engine:5.1.0'
+    )
 }
-
 
 test {
     testLogging {
         events 'PASSED', 'FAILED', 'SKIPPED'
     }
+    useJUnitPlatform()
 }
-
 
