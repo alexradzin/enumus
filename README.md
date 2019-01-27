@@ -3,8 +3,8 @@
 As set of utilities that make java enums more powerful.
 
 # Features
-* [Customized `valueOf()` (implementation of `valueOf()` based on any `enum` field and not on name as standard implementation.
-* `valueOf()` based on value range](README.md#Customized-`valueOf()`)
+* [Customized `valueOf()` (implementation of `valueOf()` based on any `enum` field and not on name as standard implementation)](README.md#Customized-`valueOf()`)
+* [`valueOf()` based on value range](README.md#Range-based-`valueOf()`)
 * [Enum map validator](README.md#Enum-map-validator)
 * [Mirror `enum`](README.md#Mirror-`enum`)
 * [Hierarchical `enum`](README.md#Hierarchical-`enum`)
@@ -74,8 +74,20 @@ The utility supports ranges as well. Visible colors are just electro magnetic wa
 
 
 # Enum map validator
+It is very useful practice to use `enum` constants as the map keys. Values may contain either simple data, complex objects or often functions. Very often we want to have entry per each `enum` element. Unfortunately compiler will not help us to detect if new element was added to enum. In this case code can fail at rutime. Enumus helps to solve this problem:
+
+```java
+EnumMapValidator.validateKeys(Color.class, map, "Colors map");
+```
+
+If for instance `map` does not contain entry `BLUE` the line above will throw `IllegalStateException` with message `"Colors map is not complete: [RED, GREEN, [BLUE]] (keys in squire brackets are absent)"`
+
 
 # Mirror `enum`
+Enums can hold data and implement methods. However not all methods can be implemented in one class. Methods may delegate functionality to other classes that require external dependencies. Often we do not want to put all dependencies into one module but rather separate them among several modules. Sometimes this cause us to hold 2 or more `enum`s with the same constants and different implementation. This can be used instead of classic [Visitor pattern](https://en.wikipedia.org/wiki/Visitor_pattern) but even has advantage: some implementations may be optional and we can check whether the implementation is done or not without calling the actual function. 
+
+
+
 
 # Hierarchical `enum`
 
