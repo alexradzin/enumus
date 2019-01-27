@@ -86,10 +86,26 @@ If for instance `map` does not contain entry `BLUE` the line above will throw `I
 # Mirror `enum`
 Enums can hold data and implement methods. However not all methods can be implemented in one class. Methods may delegate functionality to other classes that require external dependencies. Often we do not want to put all dependencies into one module but rather separate them among several modules. Sometimes this cause us to hold 2 or more `enum`s with the same constants and different implementation. This can be used instead of classic [Visitor pattern](https://en.wikipedia.org/wiki/Visitor_pattern) but even has advantage: some implementations may be optional and we can check whether the implementation is done or not without calling the actual function. 
 
+Enumus introduces term "morror" `enum`, that is `enum` that has the same entries as its mirror. The feature may be comapred with 2 classes that implement the same interface. In this case compiler checks that all methods are implemented. Mirror enum cannot enjoy the compiler's service but it is enough add one line of code in static initialiazer and exception will be thrown if enum does not reflect its mirror. 
 
+
+```java
+enum MissingColor {
+    RED, GREEN,;
+    static {
+        Mirror.mirrors(MissingColor.class, Color.class); // throws exception because BLUE is absent
+    }
+}
+```
 
 
 # Hierarchical `enum`
+
+Neither `enum`s nor their elements cannot be inherited from other class. It is becase each `enum` is inherited implicitly from `java.lang.Enum`. Some tasks however can be easier modelled using hierarchy. Enumus helps to implement hieratchical structure with `enum`s. 
+
+
+
+
 
 # Initialization using annotations
 
