@@ -103,11 +103,112 @@ enum MissingColor {
 
 Neither `enum`s nor their elements cannot be inherited from other class. It is becase each `enum` is inherited implicitly from `java.lang.Enum`. Some tasks however can be easier modelled using hierarchy. Enumus helps to implement hieratchical structure with `enum`s. 
 
+```java
+public enum OsType {
+    OS(null),
+        Windows(OS),
+            WindowsNT(Windows),
+                WindowsNTWorkstation(WindowsNT),
+                WindowsNTServer(WindowsNT),
+            Windows2000(Windows),
+                Windows2000Server(Windows2000),
+                Windows2000Workstation(Windows2000),
+            WindowsXp(Windows),
+            WindowsVista(Windows),
+            Windows7(Windows),
+            Windows95(Windows),
+            Windows98(Windows),
+    Unix(OS) {
+        @Override
+        public boolean supportsXWindowSystem() {
+            return true;
+        }
+    },
+    Linux(Unix),
+        IOS(Linux),
+        Android(Linux),
+    AIX(Unix),
+    HpUx(Unix),
+    SunOs(Unix),;
+    private OsType parent;
+    OsType(OsType parent) {
+        this.parent = parent;
+    }
+}
+```
 
+The structure above is defined using standard Java syntax; there is no need to use external tools. However the following features may be needed here:
+* we cannot easily get list of all children of `Linux`
+* How to check that `WindowsVista` is `Windows`?
+* How to "inherit" method `supportsXWindowSystem()` in all Unix like systems?
 
+All these can be easily done with class `Hierarchy` implemented by enumus. Just add the following line:
 
+```java
+    private static Hierarchy<OsType> hierarchy = new Hierarchy<>(OsType.class, e -> e.parent);
+```
+and implementation of described above methods becomes trivial:
+
+```java
+    public OsType[] children() {
+        return hierarchy.getChildren(this);
+    }
+    public boolean supportsXWindowSystem() {
+        return hierarchy.invoke(this, args -> false);
+    }
+    public boolean isA(OsType other) {
+        return hierarchy.relate(other, this);
+    }
+```
 
 # Initialization using annotations
+Almost each appllication contains series of constant values like these:
 
+```java
+public static final String THREAD_COUNT_PROPERTY = "THREAD_COUNT_PROPERTY";
+public static final int THREAD_COUNT_DEFAULT = 10;
+public static final String CONNECTION_TIMEOUT_PROPERTY = "CONNECTION_TIMEOUT_PROPERTY";
+public static final int CONNECTION_TIMEOUT_DEFAULT = 10_000;
+```
 
+It is convenient to organize such constants using enums. For example instead of having a lot of groups of `static final` members we can put them into enum like following:
+
+```java
+enum Configuration {
+    THREAD_COUNT(10), NETWORK_TIMEOUT(10_000),;
+    private final int value;
+    Configuration(int value) {this.value = value}
+    public int value() {return value;}
+    public String property() {return name() + "_PROPERTY";}
+}
+```
+
+Such enums tend to grow quickly. Sometimes they contain values that match wourse than those in example above. For exampele connection may hold read/write timeouts while threading model may become more flexible and contain minimum, maximum and default thread count. In this case we have either break the enum into separate parts or add all fields needed for all different elements together:
+
+```java
+enum Configuration {
+    THREAD_COUNT(5, 20, 10, 0, 0), // read/write timeout is irrelevant here, so we pass 0 instead 
+    NETWORK_TIMEOUT(0, 0, 10_000, 5_000, 8_000),; // min/max values are irrelevant for timeout
+    private final int min;
+    private final int max;
+    private final int value;
+
+    private final int read;
+    private final int write;
+
+    Configuration(int min, int max, int value, int read, int write) {/* initialization code*/}
+}
+```
+
+The definitions of the enum elements became ugly. We have to pass irrelevant values just to satisfy compiler. 
+We can define several overloaded constructors that better suite our cases. But it is not always possible. For example in this example we would liek to have 2 additional constructors:
+
+```java
+    Configuration(int min, int max, int value) {/* initialization code*/}
+    Configuration(int value, int read, int write) {/* initialization code*/}
+```
+
+But we cannot do this because both constructors have the same signature: 3 `int` parameters.
+In real life number of parameter variations may be much higher. 
+Enumus suggests solution for this. 
 
