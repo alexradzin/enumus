@@ -212,3 +212,39 @@ But we cannot do this because both constructors have the same signature: 3 `int`
 In real life number of parameter variations may be much higher. 
 Enumus suggests solution for this. 
 
+Enums are inititated when they are accessed first time, typically on JVM startup. So, performance is not an issue here. This means that the configuration could be done using annotations without impact on application performance. Enumus provides an extendable type safe annotation based framework for configuration of `enum` elements:
+
+Integer value configured using annotation
+```java
+        @IntValue(name = "number", value = 2)
+        TWO(),
+```
+
+String value configured using annotation
+```java
+        @Value(name = "str", value = "two")
+        TWO(),;
+```
+
+Here is full example that can illustrate the usage:
+
+```java
+    public enum OneDoubleParamTestEnum implements Initializable {
+        ZERO(),        // using default constructor; the double value will be initialized to 0.0
+        PI(3.1415926), // using regular constructor
+        @DoubleValue(name = "number", value = 2.718281828)
+        E();           // the value is initialiezed using annotation
+        
+        private final double number;
+        
+        OneDoubleParamTestEnum() {
+            number = $(); // default constructor that calls $() function implemented in interface Initializable
+        }
+        OneDoubleParamTestEnum(double number) {
+            this.number = number; // regular constructor
+        }
+    }
+```
+
+
+
