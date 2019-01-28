@@ -246,5 +246,14 @@ Here is full example that can illustrate the usage:
     }
 ```
 
+Almost any type of argument can be supported. The following types are supported out of the box:
+* `String`
+* `int`
+* `double`
+* `java.util.Date`
+* `java.util.regex.Pattern`
+* any `enum` type
+
+
 
 
