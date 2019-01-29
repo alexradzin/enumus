@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 import static java.lang.String.format;
 
-public class ValueOfRange<T extends Enum<T>, F>  {
+public class ValueOfRange<T extends Enum<T>, F extends Comparable>  {
     private static final String ERROR_MESSAGE = "No enum constant %s.%s";
     private final Class<T> type;
     private final NavigableMap<F, T> values;
