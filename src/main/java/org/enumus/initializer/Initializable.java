@@ -32,6 +32,14 @@ public interface Initializable {
         List<Field> fields = new ArrayList<>();
     }
 
+    default <T> T argument() {
+        return argument(null);
+    }
+
+
+    default <T> T argument(T defaultValue) {
+        return $(defaultValue);
+    }
 
     default <T> T $() {
         return $(null);
