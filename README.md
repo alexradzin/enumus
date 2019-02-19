@@ -1,4 +1,4 @@
-# enumus
+# enumus [![CircleCI](https://circleci.com/gh/alexradzin/enumus/tree/master.svg?style=svg)](https://circleci.com/gh/alexradzin/enumus/tree/master)
 
 As set of utilities that make java enums more powerful.
 
