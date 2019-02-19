@@ -35,8 +35,8 @@ class Util {
         }
     }
 
-    static <T> T create(Annotation a) {
-        return createValueData(a).createInstance();
+    static <T> T create(Annotation a, Class<?> type) {
+        return createValueData(a).createInstance(type);
         //return new FactoryCreator<T>().apply(d).apply(d.factoryMethodArguments());
     }
 

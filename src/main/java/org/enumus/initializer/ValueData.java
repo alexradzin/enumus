@@ -27,16 +27,16 @@ class ValueData {
         this.factoryMethodArguments = factoryMethodArguments;
     }
 
-    <T> T createInstance() {
+    <T> T createInstance(Class<?> type) {
         try {
-            return createInstanceStrategy();
+            return createInstanceStrategy(type);
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException(e);
         }
     }
 
     @SuppressWarnings("unchecked") // too many castings...
-    private <T> T createInstanceStrategy() throws ReflectiveOperationException {
+    private <T> T createInstanceStrategy(Class<?> fieldType) throws ReflectiveOperationException {
         Class<?> creator = factory == null ? type : factory;
         if (!"".equals(factoryMethod)) {
             Object f = null;
@@ -49,9 +49,13 @@ class ValueData {
         }
 
 
+        if (value.getClass().isArray() && fieldType.isArray() && isAssignable(type, value.getClass().getComponentType())) {
+            return (T)value;
+        }
         if (value.getClass().isArray() && Array.getLength(value) == 1 && isAssignable(type, Array.get(value, 0).getClass())) {
             return (T)Array.get(value, 0);
         }
+
         if (!value.getClass().isArray() && isAssignable(type, value.getClass())) {
             return (T)value;
         }

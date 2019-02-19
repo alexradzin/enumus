@@ -79,7 +79,7 @@ public interface Initializable {
                 .filter(a -> a.annotationType().getAnnotation(Argument.class) != null)
                 .filter(a -> Util.name(a).equals(paramName))
                 .findFirst()
-                .map(Util::create)
+                .map(a -> Util.create(a, param.getType()))
                 .orElseGet(() -> defaultValue == null ? defaultValues.get(param.getType()) : defaultValue);
 
         context.fieldCount.incrementAndGet();

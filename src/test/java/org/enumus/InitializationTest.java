@@ -1,20 +1,30 @@
 package org.enumus;
 
+import org.enumus.initializer.BooleanValue;
+import org.enumus.initializer.ByteValue;
 import org.enumus.initializer.DateValue;
 import org.enumus.initializer.DoubleValue;
 import org.enumus.initializer.Initializable;
 import org.enumus.initializer.IntValue;
+import org.enumus.initializer.LongValue;
 import org.enumus.initializer.PatternValue;
+import org.enumus.initializer.ShortValue;
 import org.enumus.initializer.Value;
+import org.enumus.samples.OsType;
+import org.enumus.samples.Platform;
 import org.enumus.samples.Software;
+import org.enumus.samples.article.IsoAlpha2;
+import org.enumus.samples.article.enumwitannotations.Country;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 
+import static org.enumus.samples.OsType.Unix;
+import static org.enumus.samples.OsType.Windows;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -107,6 +117,48 @@ class InitializationTest {
         assertThrows(IllegalStateException.class, MyTestClass::new, String.format("Class %s is not an enum", MyTestClass.class.getName()));
     }
 
+    @Test
+    void byteArray() {
+        assertArrayEquals(new byte[] {1, 2, 3}, ArrayArgumentEnum.BYTE.bytearr);
+    }
+
+    @Test
+    void shortArray() {
+        assertArrayEquals(new short[] {1, 2, 3}, ArrayArgumentEnum.SHORT.shortarr);
+    }
+
+    @Test
+    void intArray() {
+        assertArrayEquals(new int[] {1, 2, 3}, ArrayArgumentEnum.INT.intarr);
+    }
+
+    @Test
+    void longArray() {
+        assertArrayEquals(new long[] {11111111111L, 2222222222L, 3333333333L}, ArrayArgumentEnum.LONG.longarr);
+    }
+
+    @Test
+    void stringArray() {
+        assertArrayEquals(new String[] {"red", "green", "blue"}, ArrayArgumentEnum.STRING.strarr);
+    }
+
+    @Test
+    void booleanArray() {
+        assertArrayEquals(new boolean[] {true, false}, ArrayArgumentEnum.BOOLEAN.boolarr);
+    }
+
+    @Test
+    void enumArray() {
+        assertArrayEquals(new OsType[] {Windows, Unix}, ArrayArgumentEnum.WINDOWS_UNIX.operatingSystems);
+    }
+
+    @Test
+    void countriesArray() {
+        assertArrayEquals(new Country[] {Country.ENGLAND, Country.WELSH, Country.SCOTLAND}, Country.UNITED_KINDOM.getFederatedState());
+        assertEquals(IsoAlpha2.GB, Country.UNITED_KINDOM.getIso());
+    }
+
+
     public enum OneStringParamTestEnum implements Initializable {
         ZERO(),
         ONE("one"),
@@ -196,6 +248,47 @@ class InitializationTest {
 
         OnePatternTestEnum() {
             pattern = $();
+        }
+    }
+
+
+    public enum ArrayArgumentEnum implements Initializable {
+        @ByteValue(name = "bytearr", value = {1, 2, 3})
+        BYTE,
+        @ShortValue(name = "shortarr", value = {1, 2, 3})
+        SHORT,
+        @IntValue(name = "intarr", value = {1, 2, 3})
+        INT,
+        @LongValue(name = "longarr", value = {11111111111L, 2222222222L, 3333333333L})
+        LONG,
+        @BooleanValue(name = "boolarr", value = {true, false})
+        BOOLEAN,
+        @Value(name = "strarr", value = {"red", "green", "blue"})
+        STRING,
+
+
+        @Platform(name = "operatingSystems", os = {Windows, Unix})
+        WINDOWS_UNIX,
+
+        ;
+
+        private byte[] bytearr;
+        private short[] shortarr;
+        private int[] intarr;
+        private long[] longarr;
+        private boolean[] boolarr;
+        private String[] strarr;
+        private OsType[] operatingSystems;
+
+
+        ArrayArgumentEnum() {
+            this.bytearr = argument();
+            this.shortarr = argument();
+            this.intarr = argument();
+            this.longarr = argument();
+            this.boolarr = argument();
+            this.strarr = argument();
+            this.operatingSystems = argument();
         }
     }
 
