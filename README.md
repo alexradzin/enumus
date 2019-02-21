@@ -1,5 +1,8 @@
-# enumus [![CircleCI](https://circleci.com/gh/alexradzin/enumus/tree/master.svg?style=svg)](https://circleci.com/gh/alexradzin/enumus/tree/master) 
+# enumus 
+
+[![CircleCI](https://circleci.com/gh/alexradzin/enumus/tree/master.svg?style=svg)](https://circleci.com/gh/alexradzin/enumus/tree/master) 
 [![Build Status](https://travis-ci.com/alexradzin/enumus.svg?branch=master)](https://travis-ci.com/alexradzin/enumus)
+[![Coverage Status](https://coveralls.io/repos/github/alexradzin/enumus/badge.svg?branch=master)](https://coveralls.io/github/alexradzin/enumus?branch=master)
 
 
 As set of utilities that make java enums more powerful.
