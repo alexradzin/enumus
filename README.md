@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/alexradzin/enumus/badge.svg?branch=master)](https://coveralls.io/github/alexradzin/enumus?branch=master)
 
 
-As set of utilities that make java enums more powerful.
+A set of utilities that make java enums more powerful.
 
 # Features
 * [Customized `valueOf()` (implementation of `valueOf()` based on any `enum` field and not on name as standard implementation)](README.md#Customized-`valueOf()`)
