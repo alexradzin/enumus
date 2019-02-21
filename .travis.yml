@@ -1,7 +1,10 @@
 language: java
 jdk:
-  - openjdk8
   - oraclejdk8
-  
-after_success:
+before_script:
+  - chmod +x gradlew
+script:
   - ./gradlew clean build
+  - ./gradlew jacocoTestReport
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
