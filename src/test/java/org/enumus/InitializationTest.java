@@ -158,6 +158,10 @@ class InitializationTest {
         assertEquals(IsoAlpha2.GB, Country.UNITED_KINDOM.getIso());
     }
 
+    @Test
+    void wrongNameInAnnotation() {
+        WrongEnum.values();
+    }
 
     public enum OneStringParamTestEnum implements Initializable {
         ZERO(),
@@ -303,6 +307,17 @@ class InitializationTest {
             return new SimpleDateFormat("yyyy-MM-dd").parse(str);
         } catch (ParseException e) {
             throw new IllegalArgumentException(str, e);
+        }
+    }
+
+    enum WrongEnum implements Initializable {
+        @Value(name = "string", value = "wrong")
+        ONE();
+
+        private final String str;
+
+        WrongEnum() {
+            this.str = argument();
         }
     }
 }
