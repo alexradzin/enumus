@@ -1,5 +1,6 @@
 package org.enumus;
 
+import org.enumus.initializer.Argument;
 import org.enumus.initializer.BooleanValue;
 import org.enumus.initializer.ByteValue;
 import org.enumus.initializer.DateValue;
@@ -17,6 +18,11 @@ import org.enumus.samples.article.IsoAlpha2;
 import org.enumus.samples.article.enumwitannotations.Country;
 import org.junit.jupiter.api.Test;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -158,10 +164,40 @@ class InitializationTest {
         assertEquals(IsoAlpha2.GB, Country.UNITED_KINDOM.getIso());
     }
 
+    //TODO: this test should throw exception
     @Test
     void wrongNameInAnnotation() {
-        WrongEnum.values();
+        WrongArgumentNameEnum.values();
     }
+
+    @Test
+    void wrongDateFormat() {
+        ExceptionInInitializerError e = assertThrows(ExceptionInInitializerError.class, WrongAnnotationEnum::values);
+        assertEquals(IllegalStateException.class, e.getCause().getClass());
+        assertEquals(InvocationTargetException.class, e.getCause().getCause().getClass());
+        assertEquals(IllegalArgumentException.class, e.getCause().getCause().getCause().getClass());
+    }
+
+    @Test
+    void wrongArgumentType() {
+        NoSuchMethodError e = assertThrows(NoSuchMethodError.class, WrongArgType::values);
+        assertTrue(e.getMessage().contains("parse"));
+    }
+
+    @Test
+    void wrongNumberOfArguements() {
+        ExceptionInInitializerError e = assertThrows(ExceptionInInitializerError.class, WrongNumberOfArguments::values);
+        assertEquals(IllegalStateException.class, e.getCause().getClass());
+        assertEquals(NoSuchMethodException.class, e.getCause().getCause().getClass());
+    }
+
+    @Test
+    void wrongNumberOfArguementsOfFactoryMethod() {
+        ExceptionInInitializerError e = assertThrows(ExceptionInInitializerError.class, WrongNumberOfArguments2::values);
+        assertEquals(IllegalStateException.class, e.getCause().getClass());
+        assertEquals(NoSuchMethodException.class, e.getCause().getCause().getClass());
+    }
+
 
     public enum OneStringParamTestEnum implements Initializable {
         ZERO(),
@@ -310,14 +346,109 @@ class InitializationTest {
         }
     }
 
-    enum WrongEnum implements Initializable {
+    enum WrongArgumentNameEnum implements Initializable {
         @Value(name = "string", value = "wrong")
         ONE();
 
+        @SuppressWarnings("unused") // this is failure test; the field cannot be used
         private final String str;
 
-        WrongEnum() {
+        WrongArgumentNameEnum() {
             this.str = argument();
+        }
+    }
+
+
+    enum WrongAnnotationEnum implements Initializable {
+        @DateValue(name = "date", value = "1789-07-14", format = "wrong format")
+        WRONG_DATE_FORMAT(),
+        ;
+
+        @SuppressWarnings("unused") // this is failure test; the field cannot be used
+        private final Date date;
+
+        WrongAnnotationEnum() {
+            this.date = argument();
+        }
+    }
+
+
+    @Argument
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    @Value(name = "${name}", value = "${value}", type = Date.class, factory = SimpleDateFormat.class, factoryMethod = "parse")
+    @Value(name = "factoryArgument", value = "${format}")
+    public @interface WrongDateValue {
+        String name();
+        int value(); // wrong type
+        String format() default "yyyy-MM-dd'T'HH:mm:ss.SSSZ"; // example: 2001-07-04T12:08:56.235-0700
+    }
+
+
+    enum WrongArgType implements Initializable {
+        @WrongDateValue(name = "date", value = 17890714, format = "yyyyMMdd")
+        WRONG_DATE_TYPE(),
+        ;
+
+        @SuppressWarnings("unused") // this is failure test; the field cannot be used
+        private final Date date;
+
+        WrongArgType() {
+            this.date = argument();
+        }
+    }
+
+
+
+    @Argument
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    @Value(name = "${name}", value = "${value}", type = Date.class, factory = SimpleDateFormat.class, factoryMethod = "parse")
+    @Value(name = "factoryArgument", value = "${format}")
+    @Value(name = "factoryArgument", value = "${format2}")
+    public @interface ExtraArgumentDateValue {
+        String name();
+        String value();
+        String format() default "yyyy-MM-dd'T'HH:mm:ss.SSSZ"; // example: 2001-07-04T12:08:56.235-0700
+        String format2() default "yyyy-MM-dd'T'HH:mm:ss.SSSZ"; // example: 2001-07-04T12:08:56.235-0700
+    }
+
+    enum WrongNumberOfArguments implements Initializable {
+        @ExtraArgumentDateValue(name = "date", value = "17890714", format = "yyyyMMdd", format2 = "yyyyMMdd")
+        DATE(),
+        ;
+
+        @SuppressWarnings("unused") // this is failure test; the field cannot be used
+        private final Date date;
+
+        WrongNumberOfArguments() {
+            this.date = argument();
+        }
+    }
+
+
+    @Argument
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    @Value(name = "${name}", value = "${value}", type = Date.class, factory = SimpleDateFormat.class, factoryMethod = "parse")
+    @Value(name = "factoryArgument", value = "${format}")
+    @Value(name = "factoryArgument", value = "${format2}")
+    public @interface ExtraArgumentParseDateValue {
+        String name();
+        String[] value();
+        String format() default "yyyy-MM-dd'T'HH:mm:ss.SSSZ"; // example: 2001-07-04T12:08:56.235-0700
+    }
+
+    enum WrongNumberOfArguments2 implements Initializable {
+        @ExtraArgumentParseDateValue(name = "date", value = {"17890714", "17890714"}, format = "yyyyMMdd")
+        DATE(),
+        ;
+
+        @SuppressWarnings("unused") // this is failure test; the field cannot be used
+        private final Date date;
+
+        WrongNumberOfArguments2() {
+            this.date = argument();
         }
     }
 }
