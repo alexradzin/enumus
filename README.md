@@ -7,12 +7,12 @@
 A set of utilities that make java enums more powerful.
 
 ## Features
-*  [Customized `valueOf()` (implementation of `valueOf()` based on any `enum` field and not on name as standard implementation)](README.md#Customized-`valueOf()`)
-*  [`valueOf()` based on value range](README.md#Range-based-`valueOf()`)
-*  [Enum map validator](README.md#Enum-map-validator)
-*  [Mirror `enum`](README.md#Mirror-`enum`)
-*  [Hierarchical `enum`](README.md#Hierarchical-`enum`)
-*  [Initialization using annotations](README.md#Initialization-using-annotations)
+  * [Customized `valueOf()` (implementation of `valueOf()` based on any `enum` field and not on name as standard implementation)](README.md#Customized-`valueOf()`)
+  * [`valueOf()` based on value range](README.md#Range-based-`valueOf()`)
+  * [Enum map validator](README.md#Enum-map-validator)
+  * [Mirror `enum`](README.md#Mirror-`enum`)
+  * [Hierarchical `enum`](README.md#Hierarchical-`enum`)
+  * [Initialization using annotations](README.md#Initialization-using-annotations)
 
 ## Customized `valueOf()`
 Enum have a very convinient built-in feature - static function `valueOf()` that retrieves enum constant by its name. 
@@ -139,9 +139,9 @@ public enum OsType {
 ```
 
 The structure above is defined using standard Java syntax; there is no need to use external tools. However the following features may be needed here:
-* we cannot easily get list of all children of `Linux`
-* How to check that `WindowsVista` is `Windows`?
-* How to "inherit" method `supportsXWindowSystem()` in all Unix like systems?
+  * we cannot easily get list of all children of `Linux`
+  * How to check that `WindowsVista` is `Windows`?
+  * How to "inherit" method `supportsXWindowSystem()` in all Unix like systems?
 
 All these can be easily done with class `Hierarchy` implemented by enumus. Just add the following line:
 
@@ -248,12 +248,12 @@ Here is full example that can illustrate the usage:
 ```
 
 Almost any type of argument can be supported. The following types are supported out of the box:
-* `String`
-* `int`
-* `double`
-* `java.util.Date`
-* `java.util.regex.Pattern`
-* any `enum` type
+  * `String`
+  * `int`
+  * `double`
+  * `java.util.Date`
+  * `java.util.regex.Pattern`
+  * any `enum` type
 
 
 

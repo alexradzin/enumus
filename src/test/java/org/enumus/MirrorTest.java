@@ -31,6 +31,7 @@ class MirrorTest {
     @Test
     void goodMultipleMirrors() {
         Mirror.mirrors(RainbowColors1.class, Color.class, Shade.class);
+        assertEquals(RainbowColors1.values().length, Color.values().length + Shade.values().length);
     }
 
 

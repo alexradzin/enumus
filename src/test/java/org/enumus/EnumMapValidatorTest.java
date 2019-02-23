@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EnumMapValidatorTest {
     @Test
@@ -21,11 +22,13 @@ class EnumMapValidatorTest {
     @Test
     void validateFull() {
         EnumMapValidator.validate(Color.class, "Set", "colors", () -> Color.values().length, color -> true, Color::name);
+        assertTrue(Color.values().length > 0);
     }
 
     @Test
     void validateFullSet() {
         EnumMapValidator.validateElements(Color.class, new HashSet<>(Arrays.asList(Color.values())), "Colors list");
+        assertTrue(Color.values().length > 0);
     }
 
     @Test
@@ -38,6 +41,7 @@ class EnumMapValidatorTest {
     void validateKeysInFullMap() {
         Map<Color, Integer> map = Arrays.stream(Color.values()).collect(Collectors.toMap(c -> c, Enum::ordinal));
         EnumMapValidator.validateKeys(Color.class, map, "Colors map");
+        assertEquals(Color.values().length, map.size());
     }
 
     @Test

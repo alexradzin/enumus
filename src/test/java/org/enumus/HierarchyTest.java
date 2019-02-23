@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HierarchyTest {
     @Test
     void justValues() {
-        OsType.values();
+        assertTrue(OsType.values().length > 0);
     }
 
     @Test
