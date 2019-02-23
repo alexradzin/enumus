@@ -9,7 +9,7 @@ public class Mirror {
     public static <E extends Enum<E>> void of(Class<E> image, Class<E> ... images) throws IllegalStateException {
         Class<? extends Enum> caller = discoverCaller();
         if (!Enum.class.isAssignableFrom(caller)) {
-            throw new IllegalStateException(String.format("Caller of Mirror.of() %s is not enum", caller.getName()));
+            throw new IllegalStateException(format("Caller of Mirror.of() %s is not enum", caller.getName()));
         }
         Mirror.mirrors(caller, image, images);
     }

@@ -80,23 +80,26 @@ class ValueData {
 
 
 
-    private static final Map<Class, Class> primitiveWrapper = new HashMap<Class, Class>() {{
-        put(byte.class, Byte.class);
-        put(short.class, Short.class);
-        put(int.class, Integer.class);
-        put(long.class, Long.class);
-        put(char.class, Character.class);
-        put(float.class, Float.class);
-        put(double.class, Double.class);
-        put(boolean.class, Boolean.class);
-    }};
+    private static final Map<Class, Class> primitiveWrapper = new HashMap<>();
+    static {
+        primitiveWrapper.put(byte.class, Byte.class);
+        primitiveWrapper.put(short.class, Short.class);
+        primitiveWrapper.put(int.class, Integer.class);
+        primitiveWrapper.put(long.class, Long.class);
+        primitiveWrapper.put(char.class, Character.class);
+        primitiveWrapper.put(float.class, Float.class);
+        primitiveWrapper.put(double.class, Double.class);
+        primitiveWrapper.put(boolean.class, Boolean.class);
+    }
 
     private static boolean isAssignable(Class<?> left, Class<?> right) {
-        if ((left.isPrimitive() || right.isPrimitive()) && ! (left.isPrimitive() && right.isPrimitive())) {
-            left = primitiveWrapper.getOrDefault(left, left);
-            right = primitiveWrapper.getOrDefault(right, right);
+        Class<?> l = left;
+        Class<?> r = right;
+        if ((left.isPrimitive() || right.isPrimitive()) && !(left.isPrimitive() && right.isPrimitive())) {
+            l = primitiveWrapper.getOrDefault(left, left);
+            r = primitiveWrapper.getOrDefault(right, right);
         }
-        return left.isAssignableFrom(right);
+        return l.isAssignableFrom(r);
     }
 
     private static boolean areAssignable(Class[] lefts, Class[] rights) {

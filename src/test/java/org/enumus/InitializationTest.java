@@ -125,37 +125,37 @@ class InitializationTest {
 
     @Test
     void byteArray() {
-        assertArrayEquals(new byte[] {1, 2, 3}, ArrayArgumentEnum.BYTE.bytearr);
+        assertArrayEquals(new byte[] {1, 2, 3}, ArrayArgumentEnum.BYTE.getBytearr());
     }
 
     @Test
     void shortArray() {
-        assertArrayEquals(new short[] {1, 2, 3}, ArrayArgumentEnum.SHORT.shortarr);
+        assertArrayEquals(new short[] {1, 2, 3}, ArrayArgumentEnum.SHORT.getShortarr());
     }
 
     @Test
     void intArray() {
-        assertArrayEquals(new int[] {1, 2, 3}, ArrayArgumentEnum.INT.intarr);
+        assertArrayEquals(new int[] {1, 2, 3}, ArrayArgumentEnum.INT.getIntarr());
     }
 
     @Test
     void longArray() {
-        assertArrayEquals(new long[] {11111111111L, 2222222222L, 3333333333L}, ArrayArgumentEnum.LONG.longarr);
+        assertArrayEquals(new long[] {11111111111L, 2222222222L, 3333333333L}, ArrayArgumentEnum.LONG.getLongarr());
     }
 
     @Test
     void stringArray() {
-        assertArrayEquals(new String[] {"red", "green", "blue"}, ArrayArgumentEnum.STRING.strarr);
+        assertArrayEquals(new String[] {"red", "green", "blue"}, ArrayArgumentEnum.STRING.getStrarr());
     }
 
     @Test
     void booleanArray() {
-        assertArrayEquals(new boolean[] {true, false}, ArrayArgumentEnum.BOOLEAN.boolarr);
+        assertArrayEquals(new boolean[] {true, false}, ArrayArgumentEnum.BOOLEAN.getBoolarr());
     }
 
     @Test
     void enumArray() {
-        assertArrayEquals(new OsType[] {Windows, Unix}, ArrayArgumentEnum.WINDOWS_UNIX.operatingSystems);
+        assertArrayEquals(new OsType[] {Windows, Unix}, ArrayArgumentEnum.WINDOWS_UNIX.getOperatingSystems());
     }
 
     @Test
@@ -329,6 +329,34 @@ class InitializationTest {
             this.boolarr = argument();
             this.strarr = argument();
             this.operatingSystems = argument();
+        }
+
+        public byte[] getBytearr() {
+            return bytearr;
+        }
+
+        public short[] getShortarr() {
+            return shortarr;
+        }
+
+        public int[] getIntarr() {
+            return intarr;
+        }
+
+        public long[] getLongarr() {
+            return longarr;
+        }
+
+        public boolean[] getBoolarr() {
+            return boolarr;
+        }
+
+        public String[] getStrarr() {
+            return strarr;
+        }
+
+        public OsType[] getOperatingSystems() {
+            return operatingSystems;
         }
     }
 
