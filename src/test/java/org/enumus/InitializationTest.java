@@ -90,7 +90,7 @@ class InitializationTest {
 
     @Test
     void oneDateParameterValues() {
-        OneDateParamTestEnum.values();
+        assertTrue(OneDateParamTestEnum.values().length > 0);
     }
 
     @Test
@@ -105,7 +105,7 @@ class InitializationTest {
 
     @Test
     void onePatternParameterValues() {
-        OnePatternTestEnum.values();
+        assertTrue(OnePatternTestEnum.values().length > 0);
     }
 
     @Test
@@ -167,7 +167,7 @@ class InitializationTest {
     //TODO: this test should throw exception
     @Test
     void wrongNameInAnnotation() {
-        WrongArgumentNameEnum.values();
+        assertTrue(WrongArgumentNameEnum.values().length > 0);
     }
 
     @Test

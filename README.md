@@ -7,12 +7,12 @@
 A set of utilities that make java enums more powerful.
 
 ## Features
-* [Customized `valueOf()` (implementation of `valueOf()` based on any `enum` field and not on name as standard implementation)](README.md#Customized-`valueOf()`)
-* [`valueOf()` based on value range](README.md#Range-based-`valueOf()`)
-* [Enum map validator](README.md#Enum-map-validator)
-* [Mirror `enum`](README.md#Mirror-`enum`)
-* [Hierarchical `enum`](README.md#Hierarchical-`enum`)
-* [Initialization using annotations](README.md#Initialization-using-annotations)
+*  [Customized `valueOf()` (implementation of `valueOf()` based on any `enum` field and not on name as standard implementation)](README.md#Customized-`valueOf()`)
+*  [`valueOf()` based on value range](README.md#Range-based-`valueOf()`)
+*  [Enum map validator](README.md#Enum-map-validator)
+*  [Mirror `enum`](README.md#Mirror-`enum`)
+*  [Hierarchical `enum`](README.md#Hierarchical-`enum`)
+*  [Initialization using annotations](README.md#Initialization-using-annotations)
 
 ## Customized `valueOf()`
 Enum have a very convinient built-in feature - static function `valueOf()` that retrieves enum constant by its name. 
@@ -50,18 +50,16 @@ The static accessor is simple too. It should not care about throwing exception i
 
 The utity accepts reference to function that can implement more complicated logic than just accessing a simple field.
 
-
 ### Range based `valueOf()`
 The utility supports ranges as well. Visible colors are just electro magnetic waves of certain length.
 
-| Color | Wave length, nm |
-|-------|-----------------|
-| Red   | 700–635         |
-| Orange| 635–590         |
-| Yellow| 590–560         |
-| Green | 560–520         |
+| Color  | Wave length, nm |
+|--------|-----------------|
+| Red    | 700–635         |
+| Orange | 635–590         |
+| Yellow | 590–560         |
+| Green  | 560–520         |
 
- 
  We want to define enum `Rgb` and get enum constant by wave length from the range. It is very easy with enumus:
  
  ```java
@@ -79,8 +77,6 @@ The utility supports ranges as well. Visible colors are just electro magnetic wa
     }    
 ```
 
-
-
 ## Enum map validator
 It is very useful practice to use `enum` constants as the map keys. Values may contain either simple data, complex objects or often functions. Very often we want to have entry per each `enum` element. Unfortunately compiler will not help us to detect if new element was added to enum. In this case code can fail at rutime. Enumus helps to solve this problem:
 
@@ -95,7 +91,6 @@ Enums can hold data and implement methods. However not all methods can be implem
 
 Enumus introduces term "morror" `enum`, that is `enum` that has the same entries as its mirror. The feature may be comapred with 2 classes that implement the same interface. In this case compiler checks that all methods are implemented. Mirror enum cannot enjoy the compiler's service but it is enough add one line of code in static initialiazer and exception will be thrown if enum does not reflect its mirror. 
 
-
 ```java
 enum MissingColor {
     RED, GREEN,;
@@ -104,7 +99,6 @@ enum MissingColor {
     }
 }
 ```
-
 
 ## Hierarchical `enum`
 
