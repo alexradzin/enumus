@@ -81,4 +81,15 @@ class ValueOfTest {
         assertEquals(format("No enum constant %s.%s", Rgb.class.getName(), "Black"), e.getMessage());
     }
 
+    @Test
+    void outOfRangeTooLow() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> Rgb.valueByWaveLength(1));
+        assertEquals("No enum constant org.enumus.samples.Rgb.1", e.getMessage());
+    }
+
+    @Test
+    void outOfRangeTooHigh() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> Rgb.valueByWaveLength(999));
+        assertEquals("No enum constant org.enumus.samples.Rgb.999", e.getMessage());
+    }
 }
