@@ -3,6 +3,7 @@
 [![CircleCI](https://circleci.com/gh/alexradzin/enumus/tree/master.svg?style=svg)](https://circleci.com/gh/alexradzin/enumus/tree/master) 
 [![Build Status](https://travis-ci.com/alexradzin/enumus.svg?branch=master)](https://travis-ci.com/alexradzin/enumus)
 [![codecov](https://codecov.io/gh/alexradzin/enumus/branch/master/graph/badge.svg)](https://codecov.io/gh/alexradzin/enumus)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ea86efcce7224cc294cd8d550fe63a82)](https://www.codacy.com/app/alexradzin/enumus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alexradzin/enumus&amp;utm_campaign=Badge_Grade)
 
 A set of utilities that make java enums more powerful.
 
